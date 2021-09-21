@@ -1,12 +1,15 @@
+import PathPlanner
 import sys
  
 #total arguments
 n = len(sys.argv) #n = 9
+arg_error = False
+numbers = []
 
 if(n > 9):
-    print("Error: Too many command line arguments; there should be 9 arguments.")
+    sys.exit("Error: Too many command line arguments; there should be 9 arguments.")
 elif(n < 9):
-    print("Error: Not enough command line arguments; there should be 9 arguments.")
+    sys.exit("Error: Not enough command line arguments; there should be 9 arguments.")
 else:
     file_name = sys.argv[0] #main.py
     input_string = sys.argv[1] #--input
@@ -20,29 +23,32 @@ else:
 
     if(input_string != "--input"):
         print("Error: second argument should be --input\n")
+        arg_error = True
     if(start_string != "--start"):
         print("Error: fourth argument should be --start\n")
+        arg_error = True
     if(goal_string != "--goal"):
         print("Error: sixth argument should be --goal\n")
+        arg_error = True
     if(search_string != "--search"):
         print("Error: eighth argument should be --search\n")
+        arg_error = True
 
-#print(start_node[0])
+if(arg_error == True):
+    exit()
 
-'''
-#print("Total arguments passed:", n)
- 
-# Arguments passed
-print("\nName of Python script:", sys.argv[0])
- 
-print("\nArguments passed:", end = " ")
-for i in range(1, n):
-    print(sys.argv[i], end = " ")
-     
-# Addition of numbers
-Sum = 0
-# Using argparse module
-for i in range(1, n):
-    Sum += int(sys.argv[i])
-     
-print("\n\nResult:", Sum)'''
+file = open(input_file, "r")
+while 1:
+    char = file.read(1)
+    if(char == ''):
+        break
+    elif(char != '0' and char != '1' and char != ',' and char != '\n'):
+        sys.exit("Error: file was not valid and included something other than a 0, 1, or \",\"")
+    elif(char == '\n'):
+        continue
+    else:
+        numbers.append(char)
+
+print(numbers)
+
+file.close()
