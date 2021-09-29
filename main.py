@@ -1,6 +1,27 @@
 from os import close
 import sys
 
+def findNeighbor(grid, popped):
+    neighbor = []
+    if popped[1] - 1 in range(0, len(grid)):
+        south = (popped[0]+ 0, popped[1] - 1)
+        neighbor.append(south)
+
+    if popped[1] + 1 in range(0, len(grid)):
+        north = (popped[0] + 0, popped[1] + 1)
+        neighbor.append(north)
+
+    if popped[0] - 1 in range(0, len(grid[0])):
+        west = (popped[0] - 1, popped[1] + 0)
+        neighbor.append(west)
+    
+    if (popped[0] + 1) in range(0, len(grid[0])):
+        east = (popped[0] + 1, popped[1] + 0)
+        neighbor.append(east)
+
+    return neighbor
+
+
 class Node():
     def __init__(self, parent=None, position=None):
         self.parent = parent
@@ -31,28 +52,29 @@ class PathPlanner():
             print("You're start and goal points are the same")
             exit()
 
-        dirs = [(0, 1), (0, -1), (1, 0), (-1, 0)]
+        visit = []
 
-        x, y = self.start[0], self.start[1]
-        path = [(self.start[1], self.start[0])]
-        for dx, dy in dirs:
-            nx = x + dx
-            ny = y + dy
-            while 0 <= nx + dx < len(self.grid) and 0 <= ny + dy < len(self.grid[0]) and self.grid[nx+dx][ny+dy] != 1:
-                
-                nx += dx
-                ny += dy
-            
-            if self.grid[nx][ny] != 0:
-                continue
-            else:
-                self.grid[nx][ny] = 2
+        stack = []
 
-            if self.depth_first_search():
-                return path, len(path)
-        
-        return False
+        stack.append(self.start)
+
+        while(len(stack)):
+            popped = stack.pop()
             
+            if self.goal == popped:
+                visit.append(popped)
+                return visit, len(visit)
+
+            if popped not in visit:
+                visit.append(popped)
+                neighbors = findNeighbor(self.grid, popped)
+            
+                for neighbor in neighbors:
+                    if self.grid[neighbor[1]][neighbor[0]] == 1:
+                        continue
+
+                    if neighbor not in visit:
+                        stack.append(neighbor)
 
     def breadth_first_search(self):
         if self.grid[self.start[1]][self.start[0]] == 1:
@@ -66,45 +88,29 @@ class PathPlanner():
             print("You're start and goal points are the same")
             exit()
 
-        cols = len(self.grid[0])
-        rows = len(self.grid)
-        #dirs = [(0, 1), (0, -1), (1, 0), (-1, 0)]
-        dr = [-1, 1, 0, 0]
-        dc = [0, 0, 1, -1]
-        rq = []
-        rc = []
-        
-        #path = [(self.start[1], self.start[0])]
-        traversed = 0
-        node_left_in_layer = 1
-        node_in_next_layer= 0
+        visit = []
 
-        reached_end = False
+        queue = []
 
-        visited = [[False for i in range(cols)] for j in range(rows)]
-        visited[self.start[1]][self.start[0]] = True
-            #while 
+        queue.append(self.start)
 
+        while(len(queue)):
+            popped = queue.pop(0)
+            
+            if self.goal == popped:
+                visit.append(popped)
+                return visit, len(visit)
 
+            if popped not in visit:
+                visit.append(popped)
+                neighbors = findNeighbor(self.grid, popped)
+            
+                for neighbor in neighbors:
+                    if self.grid[neighbor[1]][neighbor[0]] == 1:
+                        continue
 
-        '''while path:
-            x, y = path.pop(0)
-            if x == self.grid[0] and y == self.grid[1]:
-                return True
-            for dx, dy in dirs:
-                nx = x
-                ny = y
-
-                while 0 <= nx + dx < len(self.grid) and 0 <= ny + dy < len(self.grid[0]) and self.grid[nx+dx][ny+dy] != 1:
-                    nx += dx
-                    ny += dy
-
-                if self.grid[nx][ny] != 0:
-                    continue
-                else:
-                    self.grid[nx][ny] = 2
-                    path.append((nx, ny))
-        return False'''
+                    if neighbor not in visit:
+                        queue.append(neighbor)
 
     def a_star_search(self):
         if self.grid[self.start[1]][self.start[0]] == 1:
@@ -260,7 +266,7 @@ y_goal = goal_node[1]
 #print("y_start: {}".format(y_start))
 #print("x_goal: {}".format(x_goal))
 #print("y_goal: {}".format(y_goal))
-print(numbers)
+#print(numbers)
 
 if len(numbers[0]) <= int(x_start) or len(numbers[0]) <= int(x_goal):
     print("One of your x-coordinates is out of range")
