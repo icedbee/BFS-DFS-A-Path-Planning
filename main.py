@@ -181,7 +181,6 @@ class PathPlanner():
 
                 open_list.append(child)
 
-
 #total arguments
 n = len(sys.argv) #n = 9
 arg_error = False
@@ -293,11 +292,11 @@ elif search_type == "A*":
     print("Traversed: {}".format(a_star_traversed))
 elif search_type == "ALL":
     bfs_path, bfs_traversed = PathPlanner(start, goal, numbers).breadth_first_search()
-    dfs_path, dfs_traversed = PathPlanner(start, goal, numbers).depth_first_search()
-    a_star_path, a_star_traversed = PathPlanner(start, goal, numbers).a_star_search()
     print("BFS Path: {}".format(bfs_path))
     print("Traversed: {}".format(bfs_traversed))
+    dfs_path, dfs_traversed = PathPlanner(start, goal, numbers).depth_first_search()
     print("DFS Path: {}".format(dfs_path))
     print("Traversed: {}".format(dfs_traversed))
+    a_star_path, a_star_traversed = PathPlanner(start, goal, numbers).a_star_search()
     print("A* Path: {}".format(a_star_path))
     print("Traversed: {}".format(a_star_traversed))
