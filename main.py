@@ -49,8 +49,9 @@ class PathPlanner():
             exit()
         
         if self.start == self.goal:
-            print("You're start and goal points are the same")
-            exit()
+            return [self.goal], 1
+            #print("You're start and goal points are the same")
+            #exit()
 
         visit = []
 
@@ -85,8 +86,9 @@ class PathPlanner():
             exit()
         
         if self.start == self.goal:
-            print("You're start and goal points are the same")
-            exit()
+            return [self.goal], 1
+            #print("You're start and goal points are the same")
+            #exit()
 
         visit = []
 
@@ -276,7 +278,6 @@ elif len(numbers) <= int(y_start) or len(numbers) <= int(y_goal):
 
 start = (int(x_start),int(y_start))
 goal = (int(x_goal), int(y_goal))
-#print(type(start))
 
 if search_type == "BFS":
     bfs_path, bfs_traversed = PathPlanner(start, goal, numbers).breadth_first_search()
