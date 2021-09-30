@@ -29,7 +29,6 @@ def findNeighbor(grid, popped):
 
     return neighbor
 
-
 class Node():
     '''
         A class for nodes in A* search
